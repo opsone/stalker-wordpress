@@ -2,7 +2,7 @@
 /**
  * Plugin Name: OPSONE - Stalker
  * Description: Module pour le suivi du projet depuis Stalker.
- * Version: 0.1.0
+ * Version: 0.2.0
  */
 
 class DependenciesController
@@ -22,27 +22,19 @@ class DependenciesController
 
   public function list_dependencies()
   {
+    // Get the access token from settings.php
+    $token = defined('OPS_STALKER_TOKEN') ? OPS_STALKER_TOKEN : false;
+
+    // Check the token if it's enabled
+    if ($token && !(isset($_GET['token']) && hash_equals($token, $_GET['token']))) {
+      wp_die('Access denied', 'Error', ['response' => 401]);
+    }
+
     $node_bin = defined('OPS_NODE_BIN') ? OPS_NODE_BIN : 'node';
     $npm_bin = defined('OPS_NPM_BIN') ? OPS_NPM_BIN : 'npm';
     $php_bin = defined('OPS_PHP_BIN') ? OPS_PHP_BIN : 'php';
     $composer_bin = defined('OPS_COMPOSER_BIN') ? OPS_COMPOSER_BIN : 'composer';
     $elastic_search_api_url = defined('OPS_ELASTIC_SEARCH_API_URL') ? OPS_ELASTIC_SEARCH_API_URL : 'http://localhost:9200';
-    
-
-    // Check if IP is defined in settings.php
-    if (!defined('OPS_ALLOWED_IP')) {
-      wp_die('No IP address defined in wp-config.php', 'Error');
-    }
-
-    if (!is_array(OPS_ALLOWED_IP)) {
-      return new Response('IP address defined in settings.php is not an array', 500);
-    }
-
-    $client_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR']!="") ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
-    // Check if client IP is the same as the authorized IP
-    if ( !in_array($client_ip, OPS_ALLOWED_IP)) {
-      wp_die('Access denied', 'Error', ['response' => 403]);
-    }
 
     // Get active theme path
     $theme_path = get_stylesheet_directory();

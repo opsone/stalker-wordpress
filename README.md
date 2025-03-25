@@ -3,7 +3,7 @@
 ## Introduction
 Ce module WordPress sert à lister toutes les informations sur les dépendences utilisées par un projet WordPress.
 
-Pour accéder au JSON de sortie, il faut aller à `adresseRacineDuProjet/stalker/depepndencies` depuis l'une des adresses ip autorisée.
+Pour accéder au JSON de sortie, il faut aller à `adresseRacineDuProjet/stalker/dependencies?token=toeknOfTheStage`
 
 ## Prérequis
 - Avoir installé le module sur le site
@@ -19,11 +19,10 @@ Pour accéder au JSON de sortie, il faut aller à `adresseRacineDuProjet/stalker
 - Activer le plugin depuis l'interface d'administration de WordPress
 - Ajouter la ligne de configuration au fichier `wp-config.php` du projet
 
-### Ligne de configuration à ajouter au fichier `wp-config.php`
+### Ligne de configuration à ajouter au fichier `wp-config.php` pour protéger le module (Optionnel)
 ```php
-define( 'OPS_ALLOWED_IP', ['ip1', 'ip2', ...]);
+define( 'OPS_STALKER_TOKEN', 'toeknOfTheStage');
 ```
-#### **<span style="color: #dc3545">Attention : S'il n'y a qu'une adresse ip qui est authorisée, veillez bien à la renseigner dans un tableau</span>**
 
 ### Si les binaires n'utilisent pas le chemin par défaut
 - Ajouter les ligne de configuration suivante au fichier `settings.php` du projet
